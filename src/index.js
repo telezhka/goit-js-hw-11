@@ -1,3 +1,5 @@
+import Notiflix from 'notiflix';
+
 const searchForm = document.querySelector('.search-form');
 const loadBtn = document.querySelector('.load-more');
 const galleryBox = document.querySelector('.gallery');
