@@ -4,23 +4,15 @@ const searchForm = document.querySelector('.search-form');
 const loadBtn = document.querySelector('.load-more');
 const galleryBox = document.querySelector('.gallery');
 
-const URL = 'https://pixabay.com/api/';
-const API_KEY = '37812301-bb78e35e415e6149d67a423b2';
-
 let requestArr = [];
-let page = 1;
 let requestPic = '';
 
-const fetchSearch = async requestPic => {
-  const response = await fetch(
-    `${URL}?key=${API_KEY}&q=${requestPic}&image_type=photo&orientation=horizontal&per_page=40&page=${page}`
-  );
-  const users = await response.json();
-  return users;
-};
+import { fetchSearch } from './js/requests';
+import { markup } from './js/markup';
 
 searchForm.addEventListener('submit', handleSubmit);
 function handleSubmit(event) {
+  page = 1;
   event.preventDefault();
   const {
     elements: { searchQuery },
@@ -30,7 +22,7 @@ function handleSubmit(event) {
     return; // Не відправляти запит, якщо поле порожнє
   }
   galleryBox.innerHTML = '';
-  fetchSearch(requestPic)
+  fetchSearch(requestPic, page)
     .then(data => {
       if (data.total === 0) {
         Notiflix.Notify.warning(
@@ -38,33 +30,8 @@ function handleSubmit(event) {
         );
       }
       requestArr = data.hits;
-      //   console.log(requestArr);
-      for (let i = 0; i < requestArr.length; i++) {
-        const request = requestArr[i];
-        let option = document.createElement('div');
-        option.innerHTML = `
-                    <div class="photo-card">
-            <img src="${request.previewURL}" alt="${request.tags}" loading="lazy" />
-            <div class="info">
-              <p class="info-item">
-                <b>Likes</b>
-          ${request.likes}
-              </p>
-              <p class="info-item">
-                <b>Views</b>
-          ${request.views}
-              </p>
-              <p class="info-item">
-                <b>Comments</b>
-          ${request.comments}
-              </p>
-              <p class="info-item">
-                <b>Downloads</b>
-          ${request.downloads}
-              </p>
-            </div>`;
-        galleryBox.appendChild(option);
-      }
+      markup(requestArr, galleryBox);
+      loadBtn.removeAttribute('hidden');
     })
     .catch(error => {
       console.log(error);
@@ -80,14 +47,7 @@ function loaderHandler() {
   if (!requestPic) {
     return; // Не відправляти запит, якщо поле порожнє
   }
-  const fetchSearch = async requestPic => {
-    const response = await fetch(
-      `${URL}?key=${API_KEY}&q=${requestPic}&image_type=photo&orientation=horizontal&per_page=40&page=${page}`
-    );
-    const users = await response.json();
-    return users;
-  };
-  fetchSearch(requestPic)
+  fetchSearch(requestPic, page)
     .then(data => {
       if (data.total === 0) {
         Notiflix.Notify.warning(
@@ -96,32 +56,7 @@ function loaderHandler() {
       }
       requestArr = data.hits;
       //   console.log(requestArr);
-      for (let i = 0; i < requestArr.length; i++) {
-        const request = requestArr[i];
-        let option = document.createElement('div');
-        option.innerHTML = `
-                    <div class="photo-card">
-            <img src="${request.previewURL}" alt="${request.tags}" loading="lazy" />
-            <div class="info">
-              <p class="info-item">
-                <b>Likes</b>
-          ${request.likes}
-              </p>
-              <p class="info-item">
-                <b>Views</b>
-          ${request.views}
-              </p>
-              <p class="info-item">
-                <b>Comments</b>
-          ${request.comments}
-              </p>
-              <p class="info-item">
-                <b>Downloads</b>
-          ${request.downloads}
-              </p>
-            </div>`;
-        galleryBox.appendChild(option);
-      }
+      markup(requestArr, galleryBox);
     })
     .catch(error => {
       console.log(error);
