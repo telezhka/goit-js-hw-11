@@ -12,8 +12,8 @@ import { markup } from './js/markup.js';
 
 searchForm.addEventListener('submit', handleSubmit);
 function handleSubmit(event) {
-  page = 1;
   event.preventDefault();
+  let page = 1;
   const {
     elements: { searchQuery },
   } = event.currentTarget;
