@@ -7,8 +7,8 @@ const galleryBox = document.querySelector('.gallery');
 let requestArr = [];
 let requestPic = '';
 
-import { fetchSearch } from './js/requests';
-import { markup } from './js/markup';
+import { fetchSearch } from './js/requests.js';
+import { markup } from './js/markup.js';
 
 searchForm.addEventListener('submit', handleSubmit);
 function handleSubmit(event) {
