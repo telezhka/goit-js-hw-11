@@ -6,6 +6,7 @@ const galleryBox = document.querySelector('.gallery');
 
 let requestArr = [];
 let requestPic = '';
+let page = 1;
 
 import { fetchSearch } from './js/requests.js';
 import { markup } from './js/markup.js';
