@@ -33,6 +33,7 @@ function handleSubmit(event) {
       requestArr = data.hits;
       markup(requestArr, galleryBox);
       loadBtn.removeAttribute('hidden');
+      loadBtn.classList.add('onshow');
     })
     .catch(error => {
       console.log(error);
